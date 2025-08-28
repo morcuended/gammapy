@@ -41,7 +41,6 @@ REQUIRED_COLUMNS = {
     "e2dnde": ["e_ref", "e2dnde"],
     "flux": ["e_min", "e_max", "flux"],
     "eflux": ["e_min", "e_max", "eflux"],
-    # TODO: extend required columns
     "likelihood": [
         "e_min",
         "e_max",
@@ -279,12 +278,12 @@ class FluxMaps:
 
     @property
     def n_sigma(self):
-        """n sigma"""
+        """Number of sigma."""
         return self.meta.get("n_sigma", 1)
 
     @property
     def n_sigma_ul(self):
-        """n sigma UL."""
+        """Number of sigma UL."""
         return self.meta.get("n_sigma_ul")
 
     @property

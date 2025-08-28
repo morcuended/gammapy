@@ -36,7 +36,22 @@ from ..geom import Geom, pix_tuple_to_idx
 from ..utils import _check_width
 from ..wcs import WcsGeom
 
+log = logging.getLogger(__name__)
+
+
 __all__ = ["RegionGeom"]
+
+
+def _parse_regions(regions):
+    if isinstance(regions, str):
+        regions = Regions.parse(data=regions, format="ds9")
+    elif isinstance(regions, SkyRegion):
+        regions = [regions]
+    elif isinstance(regions, SkyCoord):
+        regions = [PointSkyRegion(center=regions)]
+    elif isinstance(regions, list) and len(regions) == 0:
+        regions = None
+    return regions
 
 
 class RegionGeom(Geom):
@@ -639,9 +654,12 @@ class RegionGeom(Geom):
             return TypeError(f"Cannot compare {type(self)} and {type(other)}")
 
         if self.data_shape != other.data_shape:
+            log.debug("RegionGeom data shape is not equal")
             return False
 
         axes_eq = self.axes.is_allclose(other.axes, rtol=rtol_axes, atol=atol_axes)
+        if not axes_eq:
+            log.debug("RegionGeom axes are not equal")
         # TODO: compare regions based on masks...
         regions_eq = True
         return axes_eq and regions_eq
@@ -729,14 +747,7 @@ class RegionGeom(Geom):
         geom : `RegionGeom`
             Region map geometry.
         """
-        if isinstance(regions, str):
-            regions = Regions.parse(data=regions, format="ds9")
-        elif isinstance(regions, SkyRegion):
-            regions = [regions]
-        elif isinstance(regions, SkyCoord):
-            regions = [PointSkyRegion(center=regions)]
-        elif isinstance(regions, list) and len(regions) == 0:
-            regions = None
+        regions = _parse_regions(regions)
 
         if regions:
             regions = regions_to_compound_region(regions)

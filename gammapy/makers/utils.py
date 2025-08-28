@@ -16,6 +16,7 @@ from gammapy.utils.coordinates import FoVICRSFrame, FoVAltAzFrame
 from gammapy.utils.regions import compound_region_to_regions
 
 __all__ = [
+    "make_counts_off_rad_max",
     "make_counts_rad_max",
     "make_edisp_kernel_map",
     "make_edisp_map",
@@ -216,7 +217,6 @@ def make_map_background_irf(
     #  Use the pointing table (does not currently exist in CTA files) to
     #  obtain the RA DEC and time for each interval. This then considers that
     #  the pointing might change slightly over the observation duration
-
     # Compute intermediate time ranges if needed
     times = Time([time_start, time_start + ontime])
 
@@ -550,9 +550,7 @@ def make_counts_off_rad_max(geom_off, rad_max, events):
 
 
 def make_observation_time_map(observations, geom, offset_max=None):
-    """
-    Compute the total observation time on the target geometry
-    for a list of observations.
+    """Compute the total observation time on the target geometry for a list of observations.
 
     Parameters
     ----------
@@ -584,9 +582,7 @@ def make_observation_time_map(observations, geom, offset_max=None):
 
 
 def make_effective_livetime_map(observations, geom, offset_max=None):
-    """
-    Compute the acceptance corrected livetime map
-    for a list of observations.
+    """Compute the acceptance corrected livetime map for a list of observations.
 
     Parameters
     ----------
@@ -602,7 +598,6 @@ def make_effective_livetime_map(observations, geom, offset_max=None):
      exposure : `~gammapy.maps.Map`
         Effective livetime.
     """
-
     livetime = Map.from_geom(geom, unit=u.hr)
     for obs in observations:
         if offset_max is None:
@@ -650,7 +645,6 @@ def guess_instrument_fov(obs):
     offset_max : `~astropy.units.quantity.Quantity`
         The maximum offset of the effective area IRF.
     """
-
     if "aeff" not in obs.available_irfs:
         raise ValueError("No Effective area IRF to infer the FoV from")
     if obs.aeff.is_pointlike:

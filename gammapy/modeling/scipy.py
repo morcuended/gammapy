@@ -161,6 +161,8 @@ def stat_profile_ul_scipy(
         Upper limit value.
     """
 
+    stat_scan = np.array(stat_scan)
+    value_scan = np.array(value_scan)
     if np.allclose(stat_scan, stat_scan[0]):
         raise ValueError(
             "Statistic profile is flat therefore no best-fit value can be determined."

@@ -91,10 +91,10 @@ print(config)
 # future reference.
 #
 
-config_stack = config.copy(deep=True)
+config_stack = config.model_copy(deep=True)
 config_stack.datasets.stack = True
 
-config_joint = config.copy(deep=True)
+config_joint = config.model_copy(deep=True)
 config_joint.datasets.stack = False
 
 # To prevent unnecessary cluttering, we write it in a separate folder.
@@ -417,8 +417,8 @@ print(models_joint)
 stacked = analysis_joint.datasets.stack_reduce()
 stacked.models = [model_joint]
 
-plt.figure()
 stacked.plot_residuals_spatial(vmin=-1, vmax=1)
+plt.show()
 
 
 ######################################################################

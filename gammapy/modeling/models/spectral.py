@@ -212,8 +212,7 @@ class SpectralModel(ModelBase):
         return self.__sub__(model)
 
     def _samples(self, fct, n_samples=10000, random_state=42, samples=None):
-        """Create SED samples from parameters and covariance
-        using multivariate normal distribution.
+        """Create SED samples from parameters and covariance using multivariate normal distribution.
 
         Parameters
         ----------
@@ -233,7 +232,6 @@ class SpectralModel(ModelBase):
             Array of SED samples
 
         """
-
         if samples is None:
             rng = get_random_state(random_state)
             samples = rng.multivariate_normal(
@@ -423,7 +421,6 @@ class SpectralModel(ModelBase):
             Median, negative, and positive errors
             on the integral flux between energy_min and energy_max.
         """
-
         if epsilon != 1e-4:  # TODO: remove in v2.1
             warnings.warn(
                 "epsilon is unused and deprecated in v2.0",
@@ -510,7 +507,6 @@ class SpectralModel(ModelBase):
             Median, negative, and positive errors on the
             energy flux between energy_min and energy_max.
         """
-
         if epsilon != 1e-4:  # TODO: remove in v2.1
             warnings.warn(
                 "epsilon is unused and deprecated in v2.0",
@@ -841,7 +837,7 @@ class SpectralModel(ModelBase):
         return np.log(f1 / f2) / np.log(1 + epsilon)
 
     def _evaluate_spectral_index(self, energy, *args, epsilon=1e-5):
-        """Same as spectral_index but with parameters samples quantities as *args"""
+        """Same as spectral_index but with parameters samples quantities as *args."""
         f1 = self.evaluate(energy, *args)
         f2 = self.evaluate(energy * (1 + epsilon), *args)
         return np.log(f1 / f2) / np.log(1 + epsilon)
@@ -871,7 +867,6 @@ class SpectralModel(ModelBase):
         index, index_errn, index_errp : tuple of float
             Median, negative, and positive error on the spectral index.
         """
-
         if epsilon != 1e-5:  # TODO: remove in v2.1
             warnings.warn(
                 "epsilon is unused and deprecated in v2.0",
@@ -1477,7 +1472,7 @@ class PiecewiseNormSpectralModel(SpectralModel):
     ----------
     energy : `~astropy.units.Quantity`
         Array of energies at which the model values are given (nodes).
-    norms : `~numpy.ndarray` or list of `Parameter`
+    norms : `~numpy.ndarray` or list of `gammapy.modeling.Parameter`
         Array with the initial norms of the model at energies ``energy``.
         Normalisation parameters are created for each value.
         Default is one at each node.
@@ -1518,16 +1513,19 @@ class PiecewiseNormSpectralModel(SpectralModel):
 
     @property
     def norms(self):
-        """Norm values"""
+        """Norm values."""
         return u.Quantity([p.value for p in self.parameters])
 
-    def evaluate(self, energy, **norms):
+    def evaluate(self, energy, *norms):
         scale = interpolation_scale(scale=self._interp)
         e_eval = scale(np.atleast_1d(energy.value))
         e_nodes = scale(self.energy.to(energy.unit).value)
-        v_nodes = scale(self.norms)
+        v_nodes = scale(norms)
         log_interp = scale.inverse(np.interp(e_eval, e_nodes, v_nodes))
-        return log_interp
+        return u.Quantity(log_interp)
+
+    def __call__(self, energy):
+        return self.evaluate(energy, *self.norms)
 
     def to_dict(self, full_output=False):
         data = super().to_dict(full_output=full_output)
@@ -2613,7 +2611,6 @@ class NaimaSpectralModel(SpectralModel):
         dnde : `~astropy.units.Quantity`
             Differential flux at given energy.
         """
-
         kwargs = {name: q for name, q in zip(self.default_parameters.names, args)}
         self._update_naima_parameters(**kwargs)
         if self.include_ssc:
