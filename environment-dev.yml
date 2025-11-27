@@ -68,6 +68,7 @@ dependencies:
   - sphinx-design
   - sphinx-copybutton
   - tox
+  - tox-uv
   - pydata-sphinx-theme
   - pre-commit
   - twine
