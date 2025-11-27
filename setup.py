@@ -16,7 +16,7 @@ you will need to run:
 
 If you don't already have tox installed, you can install it with:
 
-    pip install tox
+    pip install tox tox-uv
 
 If you only want to run part of the test suite, you can also use pytest
 directly with::
@@ -41,7 +41,7 @@ Note: building the documentation is no longer done using
 
 If you don't already have tox installed, you can install it with:
 
-    pip install tox
+    pip install tox tox-uv
 
 You can also build the documentation with Sphinx directly using::
 
