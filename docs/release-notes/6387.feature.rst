@@ -1,0 +1,1 @@
+Make LogScale clipping threshold adaptive to input dtype.
