@@ -1143,8 +1143,7 @@ def test_hpx_get_image_by_pix_non_spatial_only_regression(axes):
     # get_image_by_pix contract: pix contains ONLY non-spatial axes coordinates
     pix = (1.2345, 0.1234)[: len(m.geom.axes)]
 
-    # old buggy HPXGeom.pix_to_idx mis-parses pix[0] as ipix -> -1 / IndexError
-    m_image = m.get_image_by_pix(pix)  # should NOT raise after the fix
+    m_image = m.get_image_by_pix(pix)
 
     im_geom = m.geom.to_image()
     idx = im_geom.get_idx()
