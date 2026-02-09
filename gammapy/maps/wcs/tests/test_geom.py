@@ -748,7 +748,7 @@ def test_wcsgeom_pix_to_idx_clip_edge_from_wcs_edges():
     )
 
     sky_edges = geom.to_image().get_coord(mode="edges").skycoord
-    ny, nx = sky_edges.shape
+    ny, _ = sky_edges.shape
     sky_on_right_edge = sky_edges[ny // 2, -1]
 
     pix = geom.coord_to_pix(sky_on_right_edge)
