@@ -196,17 +196,13 @@ class InterpolationScale:
 class LogScale(InterpolationScale):
     """Logarithmic scaling."""
 
-    # Keep this attribute for backward compatibility / default behavior,
-    # but do not use it as the sole clipping threshold.
     tiny = np.finfo(np.float32).tiny
 
-    @staticmethod
-    def _tiny_for(arr):
+    @classmethod
+    def _tiny_for(cls, arr):
         arr = np.asanyarray(arr)
-        # If the input is not a floating type (e.g. int), log/exp semantics
-        # still require floating point; use float64 tiny as a fallback.
         if not np.issubdtype(arr.dtype, np.floating):
-            return np.finfo(np.float64).tiny
+            return cls.tiny
         return np.finfo(arr.dtype).tiny
 
     def _scale(self, values):
