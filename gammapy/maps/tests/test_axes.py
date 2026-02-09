@@ -1157,8 +1157,6 @@ def test_time_map_axis_pix_to_coord_third_arg_out_bug_negative_idx(monkeypatch):
         reference_time=Time("2026-01-01"),
     )
 
-    # Force np.isfinite to return a read-only array so the buggy implementation
-    # (np.logical_and(a, b, c) treating c as out) raises.
     orig_isfinite = np.isfinite
 
     def isfinite_readonly(x):
@@ -1170,14 +1168,10 @@ def test_time_map_axis_pix_to_coord_third_arg_out_bug_negative_idx(monkeypatch):
 
     pix = np.array([-1.2, 0.2, 1.2])
 
-    # Fixed implementation should not raise
     coords = axis.pix_to_coord(pix)
 
     expected = axis.reference_time + pix * u.d
 
-    # Valid entries match expected mapping
     assert_allclose(coords[1:].mjd, expected[1:].mjd)
 
-    # Invalid entry should NOT match the expected mapping
-    # (avoid depending on internal INVALID_VALUE sentinel)
     assert coords[0].mjd != expected[0].mjd
