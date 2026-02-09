@@ -1140,7 +1140,6 @@ def test_hpx_get_image_by_pix_non_spatial_only_regression(axes):
     )
     m.data = np.arange(m.data.size, dtype=float).reshape(m.data.shape)
 
-    # get_image_by_pix contract: pix contains ONLY non-spatial axes coordinates
     pix = (1.2345, 0.1234)[: len(m.geom.axes)]
 
     m_image = m.get_image_by_pix(pix)
