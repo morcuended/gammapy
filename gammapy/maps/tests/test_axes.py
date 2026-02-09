@@ -1137,9 +1137,6 @@ def test_time_map_axis_pix_to_coord_third_arg_out_bug(monkeypatch):
         reference_time=Time("2026-01-01"),
     )
 
-    # make np.isfinite(idx) return a read-only array:
-    # - buggy code treats it as 'out' and will try to write -> ValueError
-    # - fixed code uses it as a condition -> no write -> ok
     orig = np.isfinite
 
     def isfinite_ro(x):
