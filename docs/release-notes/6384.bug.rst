@@ -1,1 +1,0 @@
-Fix a bug in `gammapy.maps.axes.pix_to_coord` where np.logical_and(a, b, c) mistakenly treated the 3rd argument as the ufunc 'out' parameter instead of a third condition, potentially skipping the isfinite(idx) check.
