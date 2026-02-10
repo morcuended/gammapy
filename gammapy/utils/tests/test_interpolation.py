@@ -4,7 +4,7 @@ from gammapy.utils.interpolation import LogScale
 from gammapy.utils.testing import assert_allclose
 
 
-def test_LogScale_adaptive_behavior():
+def test_logscale_adaptive_behavior():
     """
     Test that LogScale adapts its clipping threshold based on input dtype.
     """
