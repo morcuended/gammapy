@@ -119,6 +119,7 @@ def test_map_get_image_by_pix(binsz, width, map_type, skydir, axes, unit):
     m = Map.create(
         binsz=binsz, width=width, map_type=map_type, skydir=skydir, axes=axes, unit=unit
     )
+    m.data = np.arange(m.data.size, dtype=float).reshape(m.data.shape)
     pix = (1.2345, 0.1234)[: len(m.geom.axes)]
     m_image = m.get_image_by_pix(pix)
 
@@ -1124,28 +1125,3 @@ def test_quantity():
     m = Map.from_geom(geom)
     with pytest.raises(TypeError):
         m.data = 0 * u.deg
-
-
-@pytest.mark.parametrize("axes", [map_axes[:1], map_axes])
-def test_hpx_get_image_by_pix_non_spatial_only_regression(axes):
-    pytest.importorskip("healpy")
-
-    m = Map.create(
-        binsz=0.1,
-        width=10.0,
-        map_type="hpx",
-        skydir=SkyCoord(0.0, 30.0, unit="deg"),
-        axes=axes,
-        unit="",
-    )
-    m.data = np.arange(m.data.size, dtype=float).reshape(m.data.shape)
-
-    pix = (1.2345, 0.1234)[: len(m.geom.axes)]
-
-    m_image = m.get_image_by_pix(pix)
-
-    im_geom = m.geom.to_image()
-    idx = im_geom.get_idx()
-    m_vals = m.get_by_pix(idx + pix)
-
-    assert_equal(m_image.data, m_vals)
