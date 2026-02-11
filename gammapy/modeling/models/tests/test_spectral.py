@@ -789,7 +789,7 @@ def test_template_spectral_model_evaluate_tiny():
         energy=energy, values=values * u.Unit("MeV-1 s-1 sr-1")
     )
     result = model(energy)
-    tiny = np.finfo(np.float32).tiny
+    tiny = np.finfo(values.dtype).tiny
     mask = abs(values) - tiny > tiny
     np.testing.assert_allclose(
         values[mask] / values.max(), result[mask].value / values.max()
