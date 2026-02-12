@@ -78,6 +78,10 @@ jobs:
             tox_env: 'py314-test'
             allowed_fail: false
           - os: ubuntu-latest
+            python: '3.14'
+            tox_env: 'py314-test-alldeps_noray-astropy60-numpy126'
+            allowed_fail: false
+          - os: ubuntu-latest
             python: '3.13'
             tox_env: 'py313-test-alldeps_noray-numpy126'
             allowed_fail: false
