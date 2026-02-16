@@ -212,16 +212,16 @@ and copy the notebooks and datasets needed. It executes ``binder.py`` to conda
 install Gammapy dependencies listed in the environment YAML published within the versioned
 documentation.
 
-Continuous integration and continuous delivery
-==============================================
+Continuous integration and delivery
+===================================
 
 We are running various builds as
 `GitHub actions workflows for CI/CD <https://github.com/gammapy/gammapy/actions>`__.
 Some of them are automatically triggered on pushes and pull requests, others are manually
 triggered or scheduled. The main workflows are:
 
-* Running the unit test suite running across supported Python versions and platforms.
-* Building and deployment of documentation, ensuring that tutorials run properly and code examples in docstrings are valid.
+* Running the unit test suite across supported Python versions and platforms.
+* Building and deployment of the documentation, ensuring that the tutorials run correctly and the code examples in docstrings are valid.
 * Automated release procedure to PyPI.
 * Nightly wheel building for testing against upstream dependency pre-releases.
 * Triggering benchmarking and science performance monitoring at `gammapy-benchmarks <https://github.com/gammapy/gammapy-benchmarks>`__.
