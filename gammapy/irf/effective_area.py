@@ -1,7 +1,6 @@
 # Licensed under a 3-clause BSD style license - see LICENSE.rst
 import numpy as np
 import astropy.units as u
-from astropy.visualization import quantity_support
 import matplotlib.pyplot as plt
 from gammapy.maps import MapAxes, MapAxis
 from gammapy.maps.axes import UNIT_STRING_FORMAT
@@ -99,12 +98,11 @@ class EffectiveAreaTable2D(IRF):
         for off in offset:
             area = self.evaluate(offset=off, energy_true=energy_axis.center)
             label = kwargs.pop("label", f"offset = {off:.1f}")
-            with quantity_support():
-                ax.plot(energy_axis.center, area, label=label, **kwargs)
+            ax.plot(energy_axis.center, area, label=label, **kwargs)
 
         energy_axis.format_plot_xaxis(ax=ax)
         ax.set_ylabel(
-            f"Effective Area [{ax.yaxis.units.to_string(UNIT_STRING_FORMAT)}]"
+            f"Effective Area [{energy_axis.unit.to_string(UNIT_STRING_FORMAT)}]"
         )
         ax.legend()
         return ax
@@ -141,8 +139,7 @@ class EffectiveAreaTable2D(IRF):
             if np.isnan(area).all():
                 continue
             label = f"energy = {ee:.1f}"
-            with quantity_support():
-                ax.plot(offset_axis.center, area, label=label, **kwargs)
+            ax.plot(offset_axis.center, area.value, label=label, **kwargs)
 
         offset_axis.format_plot_xaxis(ax=ax)
         ax.set_ylim(0, 1.1)
@@ -190,8 +187,7 @@ class EffectiveAreaTable2D(IRF):
 
         kwargs_colorbar = kwargs_colorbar or {}
 
-        with quantity_support():
-            caxes = ax.pcolormesh(energy.edges, offset.edges, aeff.value.T, **kwargs)
+        caxes = ax.pcolormesh(energy.edges, offset.edges, aeff.value.T, **kwargs)
 
         energy.format_plot_xaxis(ax=ax)
         offset.format_plot_yaxis(ax=ax)
