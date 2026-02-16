@@ -417,12 +417,12 @@ class MapAxis:
 
         xlabel = DEFAULT_LABEL_TEMPLATE.format(
             quantity=PLOT_AXIS_LABEL.get(self.name, self.name.capitalize()),
-            unit=ax.xaxis.units.to_string(UNIT_STRING_FORMAT),
+            unit=self.unit.to_string(UNIT_STRING_FORMAT),
         )
         ax.set_xlabel(xlabel)
         xmin, xmax = self.bounds
         if xmin != xmax:
-            ax.set_xlim(self.bounds)
+            ax.set_xlim(xmin.value, xmax.value)
         return ax
 
     def format_plot_yaxis(self, ax):
@@ -442,10 +442,11 @@ class MapAxis:
 
         ylabel = DEFAULT_LABEL_TEMPLATE.format(
             quantity=PLOT_AXIS_LABEL.get(self.name, self.name.capitalize()),
-            unit=ax.yaxis.units.to_string(UNIT_STRING_FORMAT),
+            unit=self.unit.to_string(UNIT_STRING_FORMAT),
         )
         ax.set_ylabel(ylabel)
-        ax.set_ylim(self.bounds)
+        ymin, ymax = self.bounds
+        ax.set_ylim(ymin.value, ymax.value)
         return ax
 
     @property
