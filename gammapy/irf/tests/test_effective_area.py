@@ -61,6 +61,7 @@ def test_from_parametrization():
         area2 = EffectiveAreaTable2D.from_parametrization(axis, "SWIFT")
 
 
+@pytest.mark.filterwarnings("error:This axis already has a converter set:UserWarning")
 @requires_data()
 def test_plot(aeff):
     with mpl_plot_check():
@@ -71,6 +72,9 @@ def test_plot(aeff):
 
     with mpl_plot_check():
         aeff.plot_offset_dependence()
+
+    with mpl_plot_check():
+        aeff.peek()
 
 
 def test_to_table():
