@@ -119,6 +119,7 @@ def test_map_get_image_by_pix(binsz, width, map_type, skydir, axes, unit):
     m = Map.create(
         binsz=binsz, width=width, map_type=map_type, skydir=skydir, axes=axes, unit=unit
     )
+    m.data = np.arange(m.data.size, dtype=float).reshape(m.data.shape)
     pix = (1.2345, 0.1234)[: len(m.geom.axes)]
     m_image = m.get_image_by_pix(pix)
 
@@ -601,7 +602,7 @@ def test_resample_weights():
     )
 
     map2 = map1.resample(geom2, weights=np.zeros(npix1), preserve_counts=False)
-    assert np.sum(map2.data) == 0.0
+    assert_allclose(map2.data, 0.0, atol=1e-40)
 
 
 def test_resample_downsample_wcs():
