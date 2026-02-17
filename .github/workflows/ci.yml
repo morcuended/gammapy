@@ -141,9 +141,11 @@ jobs:
           pip install setuptools_scm
           echo "PR_NUMBER=${PR_NUMBER}" >> sonar_env
           echo "SOURCE_REPOSITORY=${SOURCE_REPOSITORY}" >> sonar_env
-          echo "SOURCE_BRANCH=${SOURCE_BRANCH}" >> sonar_env
-          echo "TARGET_BRANCH=${TARGET_BRANCH}" >> sonar_env
+          echo "SOURCE_BRANCH=${SOURCE_BRANCH:-}" >> sonar_env
+          echo "TARGET_BRANCH=${TARGET_BRANCH:-}" >> sonar_env
           echo "PROJECT_VERSION=$(python -m setuptools_scm)" >> sonar_env
+          echo "REF_TYPE=${{ github.ref_type }}" >> sonar_env
+          echo "REF_NAME=${REF_NAME}" >> sonar_env
           cat sonar_env
 
       # upload coverage report for SonarQube workflow
