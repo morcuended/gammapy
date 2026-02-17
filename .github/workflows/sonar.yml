@@ -57,11 +57,12 @@ jobs:
           fetch-depth: 0
           clean: false
 
-      - name: Checkout Pull Request merge result
+      - name: Checkout Pull Request commit
         uses: actions/checkout@v6
         if: github.event.workflow_run.event == 'pull_request'
         with:
-          ref: refs/pull/${{ env.PR_NUMBER }}/merge
+          repository: ${{ github.event.workflow_run.head_repository.full_name }}
+          ref: ${{ github.event.workflow_run.head_sha }}
           fetch-depth: 0
           clean: false
 
@@ -78,7 +79,7 @@ jobs:
           ls -l coverage
 
       - name: Sonarqube Scan Branch
-        if: github.event.workflow_run.event != 'pull_request'
+        if: github.event.workflow_run.event != 'pull_request' && env.REF_TYPE != 'tag'
         uses: SonarSource/sonarqube-scan-action@v7
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -87,6 +88,7 @@ jobs:
         with:
           args: >
             "-Dsonar.projectVersion=${{ env.PROJECT_VERSION }}"
+            "-Dsonar.branch.name=${{ github.event.workflow_run.head_branch }}"
 
       - name: Sonarqube Scan PR
         if: github.event.workflow_run.event == 'pull_request'
@@ -102,3 +104,15 @@ jobs:
             "-Dsonar.pullrequest.key=${{ env.PR_NUMBER }}"
             "-Dsonar.pullrequest.branch=${{ env.SOURCE_BRANCH }}"
             "-Dsonar.pullrequest.base=${{ env.TARGET_BRANCH }}"
+
+      - name: Sonarqube Scan Tag
+        if: github.event.workflow_run.event != 'pull_request' && env.REF_TYPE == 'tag'
+        uses: SonarSource/sonarqube-scan-action@v7
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://sonar-ctao.zeuthen.desy.de
+        with:
+          args: >
+            "-Dsonar.projectVersion=${{ env.PROJECT_VERSION }}"
+            "-Dsonar.branch.name=${{ env.REF_NAME }}"
