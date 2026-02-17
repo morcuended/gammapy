@@ -1,12 +1,11 @@
 # Licensed under a 3-clause BSD style license - see LICENSE.rst
-import importlib
 import logging
 import os
 import platform
 import sys
-import warnings
 import click
 from gammapy import __version__
+from importlib.metadata import version, PackageNotFoundError
 
 log = logging.getLogger(__name__)
 
@@ -101,12 +100,8 @@ def get_info_dependencies():
     info = {}
     for name in GAMMAPY_DEPENDENCIES:
         try:
-            with warnings.catch_warnings():
-                warnings.simplefilter("ignore")
-                module = importlib.import_module(name)
-
-            module_version = getattr(module, "__version__", "no version info found")
-        except ImportError:
+            module_version = version(name)
+        except PackageNotFoundError:
             module_version = "not installed"
         info[name] = module_version
     return info
