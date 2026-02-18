@@ -321,7 +321,6 @@ def test_sample_coord_time_energy_random_seed(
 ):
     sampler = MapDatasetEventSampler(random_state=2)
 
-    energy_dependent_temporal_sky_model.temporal_model.map._unit == ""
     dataset.models = energy_dependent_temporal_sky_model
     evaluator = dataset.evaluators["test-source"]
 
@@ -344,7 +343,7 @@ def test_sample_coord_time_energy_random_seed(
 def test_sample_coord_time_energy_unit(dataset, energy_dependent_temporal_sky_model):
     sampler = MapDatasetEventSampler(random_state=1)
 
-    energy_dependent_temporal_sky_model.temporal_model.map._unit == "cm-2 s-1 TeV-1"
+    energy_dependent_temporal_sky_model.temporal_model.map._unit = "cm-2 s-1 TeV-1"
     energy_dependent_temporal_sky_model.spectral_model.parameters[0].unit = ""
     dataset.models = energy_dependent_temporal_sky_model
     evaluator = dataset.evaluators["test-source"]
@@ -720,7 +719,7 @@ def test_mde_run_switchoff(dataset, models):
 
     meta = events.table.meta
 
-    assert meta["RA_PNT"] == 266.4049882865447
+    assert_allclose(meta["RA_PNT"], 266.4049882865447)
     assert_allclose(meta["ONTIME"], 3600.0)
     assert meta["OBS_ID"] == 1001
     assert meta["RADESYSa"] == "icrs"
