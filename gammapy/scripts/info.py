@@ -4,7 +4,6 @@ import os
 import platform
 import sys
 import click
-from gammapy import __version__
 from importlib.metadata import version, PackageNotFoundError
 
 log = logging.getLogger(__name__)
@@ -17,11 +16,11 @@ GAMMAPY_DEPENDENCIES = [
     "astropy",
     "regions",
     "click",
-    "yaml",
-    # "pydantic",  # has no __version__
+    "PyYAML",
+    "pydantic",
     # optional
     "IPython",
-    # "jupyter",   # has no __version__
+    "jupyter",
     "jupyterlab",
     "matplotlib",
     "pandas",
@@ -85,10 +84,11 @@ def get_info_system():
 
 def get_info_version():
     """Get detailed info about Gammapy version."""
-    info = {"version": __version__}
     try:
+        info = {"version": version("gammapy")}
         path = sys.modules["gammapy"].__path__[0]
     except Exception:
+        info = {"version": "unknown"}
         path = "unknown"
     info["path"] = path
 
