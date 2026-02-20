@@ -30,7 +30,7 @@ dependencies = [
     "click>=8.0",
     "pydantic>=2.8.0",
     "iminuit>=2.26.0",
-    "matplotlib>=3.8,<3.10",
+    "matplotlib>=3.8",
 ]
 dynamic = ["version"]
 
@@ -120,6 +120,7 @@ filterwarnings = [
     "error::astropy.utils.exceptions.AstropyDeprecationWarning",
     "error::gammapy.utils.deprecation.GammapyDeprecationWarning",
     "error::matplotlib.MatplotlibDeprecationWarning",
+    "error:This axis already has a converter set:UserWarning",
 ]
 
 [tool.setuptools_scm]
